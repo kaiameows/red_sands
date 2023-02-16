@@ -3,7 +3,7 @@
 require 'ma'
 require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem
-loader.ignore("#{__dir__}/red_sands/rules/*_rules.rb")
+# loader.ignore("#{__dir__}/red_sands/rules/*_rules.rb")
 loader.ignore("#{__dir__}/red_sands/rules/*_leaders.rb")
 loader.ignore("#{__dir__}/red_sands/events/*events.rb")
 loader.setup

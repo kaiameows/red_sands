@@ -2,7 +2,17 @@
 
 module RedSands
   module Rules
-    # not sure if this needs to exist any more
-    class RuleSet; end
+    # base class for rulesets
+    # a ruleset is a collection of rules that define how the game is played
+    # a standard game involves three players
+    # rules for two-player games or single-player games may be out of scope
+    # in theory it would be nice to support the expansion(s) but we'll see how far I get
+    class RuleSet
+      def initialize(board:, decks:, **options)
+        @board = board
+        @decks = decks
+        @options = options
+      end
+    end
   end
 end

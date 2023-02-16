@@ -4,12 +4,19 @@ module RedSands
   module Rules
     # SectorEvaluator provides a DSL for creating sectors
     class SectorEvaluator < RuleFactory
-      def locations = @locations ||= {}
+      def locations = @locations ||= []
 
       def location(name, &)
-        r = LocationEvaluator.new
-        r.instance_eval(&)
-        locations[name] = r.attributes
+        locations << LocationEvaluator.new.tap do |evaluator|
+          evaluator.attributes[:name] = name
+          evaluator.instance_eval(&)
+        end.build
+      end
+
+      def build
+        RedSands::Sector.new(name: attributes[:name], locations:).tap do |sector|
+          boolean_attributes.each { |k, v| sector.add_flag(k, v) }
+        end
       end
     end
   end

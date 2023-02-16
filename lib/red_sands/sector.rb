@@ -6,7 +6,7 @@ module RedSands
     include RedSands::Concerns::Flaggable
     attr_reader :name, :locations
 
-    def initialize(name, locations = [])
+    def initialize(name:, locations: [])
       @name = name
       @locations = locations
     end

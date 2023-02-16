@@ -23,8 +23,8 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
     expect(subject.sectors.size).to eq(1)
   end
 
-  it 'contains attributes from the child evaluator' do
-    expect(subject.sectors['Meow'][:alliance_bonus]).to eq(troops: 2)
+  it 'processes sectors into sector objects' do
+    expect(subject.sectors.first).to be_a(RedSands::Sector)
   end
 
   context 'creating diplomatic sectors' do
@@ -45,7 +45,7 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
     end
 
     it 'sets the diplomatic flag' do
-      expect(subject.sectors['Meow'][:diplomatic]).to be true
+      expect(subject.sectors.first.diplomatic?).to be true
     end
   end
 
@@ -67,7 +67,17 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
     end
 
     it 'sets the planetary flag' do
-      expect(subject.sectors['Meow'][:planet]).to be true
+      expect(subject.sectors.first.planet?).to be true
+    end
+  end
+
+  context 'building board objects' do
+    let(:board) do
+      subject.attributes[:name] = 'Bored'
+      subject.build
+    end
+    it 'sets the sectors' do
+      expect(board.sectors.size).to eq(1)
     end
   end
 end
