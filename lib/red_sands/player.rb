@@ -3,7 +3,7 @@
 module RedSands
   # Encapsulates State and Behavior of a Player
   class Player
-    include Ma.subscriber
+    include Ma::Publisher
     attr_reader :name, :score, :hand, :resources, :deck, :avatars, :secret_powers, :alliances, :troops
 
     # rubocop:disable Metrics/ParameterLists
@@ -51,15 +51,23 @@ module RedSands
     def choose_leader(leader)
       # should only be called once
       @leader = leader
+      # instance eval or class eval?
+      # I kinda feel like it should be class eval
       instance_eval(&leader.passive_power)
     end
 
-    def add_resources(resources)
-      @resources.merge!(resources) { |_, old, new| old + new }
+    def add_resources(raw_resources)
+      resources.merge!(raw_resources.slice(:gems, :money, :food)) { |_, old, new| old + new }
+      broadcast TroopsAdded.new(player: self, troops: raw_resources[:troops]) if raw_resources.key?(:troops)
+      draw raw_resources[:secret_powers], from: :secret_powers if raw_resources.key?(:secret_powers)
     end
 
     def remove_resources(resources)
       @resources.merge!(resources) { |_, old, new| old - new }
+    end
+
+    def draw(count, from:)
+      count.times { hand << game_state.decks[from].pop }
     end
   end
 end
