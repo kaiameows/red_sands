@@ -1,28 +1,27 @@
 # frozen_string_literal: true
 
+require 'ostruct'
+
 module RedSands
   module Rules
     # BoardEvaluator provides a DSL for defining a game board
-    class BoardEvaluator
-      def initialize
-        @sectors = {}
-      end
+    class BoardEvaluator < RuleFactory
+      def sectors = @sectors ||= {}
 
       def sector(name, &)
-        @sectors[name] = Sector.new(name).instance_eval(&)
+        r = SectorEvaluator.new
+        r.instance_eval(&)
+        sectors[name] = r.attributes
       end
 
       def diplomatic_sector(name, &)
-        sector(name, &).tap do |sector|
-          sector.type = :diplomatic
-          sector.counter = DiplomaticCounter.new(alliance_bonus: sector.alliance_bonus)
-        end
+        sector(name, &)
+        sectors[name][:diplomatic] = true
       end
 
       def planet_sector(name, &)
-        sector(name, &).tap do |sector|
-          sector.type = :planet
-        end
+        sector(name, &)
+        sectors[name][:planet] = true
       end
     end
   end

@@ -23,4 +23,20 @@ RSpec.describe RedSands::Concerns::Flaggable do
       expect(f.flags[:meowy]).to be_falsey
     end
   end
+
+  context 'adding new instance flags' do
+    let(:f) { flaggable.new }
+    before { f.add_flag :woofy, true }
+    it 'allows new flags to be added to the specific instance' do
+      expect(f.flags[:woofy]).to be_truthy
+    end
+
+    it 'does not set the flag for all instances' do
+      expect(flaggable.new.flags[:woofy]).to be_nil
+    end
+
+    it 'defines accessor methods for the instance' do
+      (%i[woofy woofy? woofy=] - f.singleton_class.instance_methods).empty?
+    end
+  end
 end
