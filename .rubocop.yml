@@ -10,3 +10,13 @@
 # See https://docs.rubocop.org/rubocop/configuration
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.2
+
+Metrics/BlockLength:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
