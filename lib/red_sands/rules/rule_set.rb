@@ -8,10 +8,18 @@ module RedSands
     # rules for two-player games or single-player games may be out of scope
     # in theory it would be nice to support the expansion(s) but we'll see how far I get
     class RuleSet
-      def initialize(board:, decks:, **options)
+      def initialize(board:, market:, **options)
         @board = board
-        @decks = decks
+        @market = market
         @options = options
+      end
+
+      def standard_board
+        RedSands::Boards::StandardBoard
+      end
+
+      def standard_market
+        RedSands::StandardMarket.new
       end
     end
   end

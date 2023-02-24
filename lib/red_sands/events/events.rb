@@ -22,5 +22,6 @@ module RedSands
     event 'DiscardCard', *%i[player count], hooks: false
     event 'ExileCard', *%i[player card], hooks: false
     event 'WinGame', :player, hooks: false
+    event 'ChooseLeader', :player
   end
 end

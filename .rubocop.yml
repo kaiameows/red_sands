@@ -18,6 +18,9 @@ Metrics/BlockLength:
 Style/Lambda:
   EnforcedStyle: literal
 
+Style/PerlBackrefs:
+  Enabled: false
+
 Layout/SpaceInLambdaLiteral:
   EnforcedStyle: require_space
 

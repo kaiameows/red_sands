@@ -4,7 +4,7 @@ module RedSands
   # Encapsulates State and Behavior of a Player
   class Player < BaseModel
     include Ma.subscriber
-    attr_reader :name, :score, :hand, :resources, :deck, :workers, :secret_powers, :alliances, :troops
+    attr_reader :name, :score, :hand, :resources, :deck, :workers, :secret_powers, :alliances, :troops, :leader
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(name,
@@ -18,6 +18,7 @@ module RedSands
                    troops: default_troops)
       @name = name
       @score = score
+      @leader = nil
       @hand = hand
       @resources = resources
       @deck = deck
@@ -32,12 +33,13 @@ module RedSands
       { gems: 0, money: 0, food: 2 }.tap { |r| r.default = 0 }
     end
 
-    def default_deck
-      []
-    end
+    def default_deck = RedSands::Cards::StarterCards
 
     def default_troops
-      { reserve: [Troop[:normal], Troop[:normal]], active: [] }
+      {
+        reserve: Array.new(2) { RedSands::Troops::NormalTroop.new },
+        active: []
+      }
     end
 
     def active_troops
@@ -48,7 +50,7 @@ module RedSands
       troops[:reserve]
     end
 
-    def choose_leader(leader)
+    def choose_leader!(leader)
       # should only be called once
       @leader = leader
       # instance eval or class eval?

@@ -15,15 +15,28 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (7.0.4.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
     byebug (11.1.3)
     coderay (1.1.3)
+    concurrent-ruby (1.2.0)
     cucumber-gherkin (26.0.3)
       cucumber-messages (>= 19.1.4, < 22.0)
     cucumber-messages (21.0.1)
     cuke_modeler (3.19.0)
       cucumber-gherkin (< 27.0)
     diff-lcs (1.5.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    faker (3.1.1)
+      i18n (>= 1.8.11, < 2)
+    i18n (1.12.0)
+      concurrent-ruby (~> 1.0)
     method_source (1.0.0)
+    minitest (5.17.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -51,6 +64,8 @@ GEM
     turnip (4.4.0)
       cuke_modeler (~> 3.15)
       rspec (>= 3.0, < 4.0)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
     wisper-rspec (1.1.0)
     wisper_next (0.1.0)
     zeitwerk (2.6.7)
@@ -60,6 +75,8 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.4.6)
+  factory_bot (~> 6.2.1)
+  faker (~> 3.1.1)
   ma (~> 0.1.0)!
   pry-byebug (~> 3.10.1)
   red_sands!

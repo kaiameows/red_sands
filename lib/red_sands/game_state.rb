@@ -11,7 +11,10 @@ module RedSands
 
     def_delegators :@ruleset, :board, :decks
 
-    def self.current = @current ||= new(RedSands::Rules::RuleManager.current, [Player.new, Player.new])
+    def self.current = @current ||= new(
+      ruleset: RedSands::Rules::RuleManager.current,
+      players: Array.new(2) { RedSands::Player.new }
+    )
 
     def initialize(ruleset:, players:, market: StandardMarket.new, phase: nil)
       @ruleset = ruleset
@@ -37,9 +40,9 @@ module RedSands
 
     def effect_evaluator = @effect_evaluator ||= EffectEvaluator.new(self)
 
-    def self.start
+    def start
       publish(RedSands::Events::GameStart)
-      current.main_game_loop until current.game_over?
+      main_game_loop until current.game_over?
       broadcast(RedSands::Events::GameEnd.new)
     end
 

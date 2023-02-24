@@ -3,10 +3,9 @@
 module RedSands
   # StandardMarket is the market that is used in the standard game
   class StandardMarket < BaseModel
-    attr_accessor :decks
-
     def initialize(decks: standard_decks)
-      super
+      super()
+      @decks = decks
     end
 
     def standard_decks
