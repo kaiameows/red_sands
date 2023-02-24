@@ -1,8 +1,16 @@
+GIT
+  remote: https://gitlab.com/kris.leech/ma.git
+  revision: b516b5e05a5875f11b821ea36993d7f500c8538b
+  branch: main
+  specs:
+    ma (0.1.0)
+      wisper_next
+
 PATH
   remote: .
   specs:
     red_sands (0.1.0)
-      ma (~> 0.1.0)
+      zeitwerk (~> 2.6.7)
 
 GEM
   remote: https://rubygems.org/
@@ -15,8 +23,6 @@ GEM
     cuke_modeler (3.19.0)
       cucumber-gherkin (< 27.0)
     diff-lcs (1.5.0)
-    ma (0.1.0)
-      wisper_next
     method_source (1.0.0)
     pry (0.14.2)
       coderay (~> 1.1)
@@ -45,6 +51,7 @@ GEM
     turnip (4.4.0)
       cuke_modeler (~> 3.15)
       rspec (>= 3.0, < 4.0)
+    wisper-rspec (1.1.0)
     wisper_next (0.1.0)
     zeitwerk (2.6.7)
 
@@ -53,13 +60,14 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.4.6)
+  ma (~> 0.1.0)!
   pry-byebug (~> 3.10.1)
   red_sands!
   rspec (~> 3.12.0)
   rspec-collection_matchers
   rspec-its
   turnip (~> 4.4.0)
-  zeitwerk (~> 2.6.7)
+  wisper-rspec
 
 RUBY VERSION
    ruby 3.2.1p31

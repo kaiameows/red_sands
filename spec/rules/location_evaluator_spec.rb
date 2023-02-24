@@ -12,6 +12,7 @@ RSpec.describe RedSands::Rules::LocationEvaluator do
       end
     }
   end
+  let(:subject) { described_class.new('Warrior') }
 
   before do
     subject.instance_eval(&dsl)

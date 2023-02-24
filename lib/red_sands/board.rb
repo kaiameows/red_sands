@@ -2,7 +2,7 @@
 
 module RedSands
   # Board encapsulates the game board state
-  class Board
+  class Board < BaseModel
     attr_reader :sectors
 
     def initialize(name:, sectors: [])

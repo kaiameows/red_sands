@@ -8,8 +8,8 @@ RSpec.describe RedSands::Rules::LeaderEvaluator do
         effect { player.draw 1, from: :secret_powers }
       end
       passive_power 'when you gain gems, gain 1 fewer and draw a card' do
-        on(RedSands::Events::AfterAvatarMove) do |event|
-          if player == self && event.move.sector == 'Uninhabited Sector'
+        on(RedSands::Events::AfterWorkerMove) do |event|
+          if player == self && event.sector == 'Uninhabited Sector'
             cost gems: 1
             draw 1
           end
@@ -45,7 +45,7 @@ RSpec.describe RedSands::Rules::LeaderEvaluator do
     end
 
     it "evaluates the passive power in the player's eigenclass" do
-      expect(subject.singleton_class.instance_methods).to include(:"RedSands::Events::AfterAvatarMove")
+      expect(subject.singleton_class.instance_methods).to include(:'on_RedSands::Events::AfterWorkerMove')
     end
   end
 end

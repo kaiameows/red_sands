@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module RedSands
-  # Avatars allow players to collect resources from locations on the board
-  class Avatar
+  # Workers allow players to collect resources from locations on the board
+  class Worker < BaseModel
     attr_reader :player
 
     def initialize(player)

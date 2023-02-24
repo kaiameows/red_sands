@@ -20,3 +20,7 @@ Style/Lambda:
 
 Layout/SpaceInLambdaLiteral:
   EnforcedStyle: require_space
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/red_sands/**/*.rb'

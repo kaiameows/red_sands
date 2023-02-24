@@ -10,7 +10,7 @@ module RedSands
 
       def sector(name, &)
         sectors << SectorEvaluator.new.tap do |evaluator|
-          evaluator.attributes[:name] = name
+          evaluator.name name
           evaluator.instance_eval(&)
         end.build
       end

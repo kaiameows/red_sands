@@ -3,7 +3,7 @@
 module RedSands
   module Troops
     # BaseTroop is the base class for all troops
-    class BaseTroop
+    class BaseTroop < BaseModel
       include RedSands::Concerns::Flaggable
       attr_reader :type
       attr_accessor :power

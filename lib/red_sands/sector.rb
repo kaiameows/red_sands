@@ -2,7 +2,7 @@
 
 module RedSands
   # Sectors are groups of locations on the board
-  class Sector
+  class Sector < BaseModel
     include RedSands::Concerns::Flaggable
     attr_reader :name, :locations
 

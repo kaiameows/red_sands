@@ -2,23 +2,22 @@
 
 module RedSands
   # Locations are the places where players can collect resources
-  class Location
+  class Location < BaseModel
     include RedSands::Concerns::Flaggable
-    attr_reader :name, :resources, :cost, :agents, :effect
+    attr_reader :name, :resources, :agents, :effect, :sector_name, :cost
 
-    # rubocop:disable Metrics/ParameterLists
-    def initialize(name:, resources: {}, cost: {}, effect: nil, agents: [], requirement: nil)
+    def initialize(name:, sector_name:, cost: {}, resources: {}, effect: nil, agents: [])
       @name = name
       @resources = resources
       @cost = cost
-      # effect should be a proc, and it should be evaluated in the context of the game_state object
-      # this is so it can access things like the current player and opponents and such
+      # effect should be a GameEffect with a description, cost, precondition, and effect
       @effect = effect
       @agents = agents
-      @requirement = requirement
+      @sector_name = sector_name
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def occupied? = agents.any?
+
+    def sector = @sector ||= RedSands::GameState.current.board.sectors[sector_name]
   end
 end

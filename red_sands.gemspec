@@ -16,5 +16,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-byebug', '~> 3.10.1'
   spec.add_development_dependency 'rspec', '~> 3.12.0'
   spec.add_development_dependency 'turnip', '~> 4.4.0'
-  spec.add_runtime_dependency 'ma', '~> 0.1.0'
+  spec.add_runtime_dependency 'zeitwerk', '~> 2.6.7'
 end

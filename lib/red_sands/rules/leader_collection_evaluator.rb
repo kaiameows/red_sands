@@ -9,9 +9,11 @@ module RedSands
       def leader(name, &)
         leaders << LeaderEvaluator.new.tap do |evaluator|
           evaluator.instance_eval(&)
-          evaluator.name = name
+          evaluator.name name
         end.build
       end
+
+      alias build leaders
     end
   end
 end

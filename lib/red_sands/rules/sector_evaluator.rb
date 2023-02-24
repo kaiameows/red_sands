@@ -7,8 +7,8 @@ module RedSands
       def locations = @locations ||= []
 
       def location(name, &)
-        locations << LocationEvaluator.new.tap do |evaluator|
-          evaluator.attributes[:name] = name
+        locations << LocationEvaluator.new(attributes[:name]).tap do |evaluator|
+          evaluator.name name
           evaluator.instance_eval(&)
         end.build
       end

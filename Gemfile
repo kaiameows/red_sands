@@ -5,9 +5,10 @@ gemspec
 
 ruby '3.2.1'
 
-gem 'zeitwerk', '~> 2.6.7'
+gem 'ma', '~> 0.1.0', git: 'https://gitlab.com/kris.leech/ma.git', branch: 'main'
 
 group :development, :test do
   gem 'rspec-collection_matchers'
   gem 'rspec-its'
+  gem 'wisper-rspec'
 end

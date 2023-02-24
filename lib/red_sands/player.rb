@@ -2,9 +2,9 @@
 
 module RedSands
   # Encapsulates State and Behavior of a Player
-  class Player
-    include Ma::Publisher
-    attr_reader :name, :score, :hand, :resources, :deck, :avatars, :secret_powers, :alliances, :troops
+  class Player < BaseModel
+    include Ma.subscriber
+    attr_reader :name, :score, :hand, :resources, :deck, :workers, :secret_powers, :alliances, :troops
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(name,
@@ -12,7 +12,7 @@ module RedSands
                    hand: [],
                    resources: default_resources,
                    deck: default_deck,
-                   avatars: 2,
+                   workers: 2,
                    secret_powers: [],
                    alliances: [],
                    troops: default_troops)
@@ -21,7 +21,7 @@ module RedSands
       @hand = hand
       @resources = resources
       @deck = deck
-      @avatars = avatars
+      @workers = workers
       @secret_powers = secret_powers
       @alliances = alliances
       @troops = troops
@@ -66,8 +66,15 @@ module RedSands
       @resources.merge!(resources) { |_, old, new| old - new }
     end
 
-    def draw(count, from:)
-      count.times { hand << game_state.decks[from].pop }
+    def draw(count)
+      # this should probably only let the player draw from their own deck
+      # drawing from other decks should probably be handled by those objects
+      hand << deck.draw(count)
+    end
+
+    def take_action
+      # give the player a choice of actions
+      # actions will vary depending on the current phase and what actions the player has already taken
     end
   end
 end
