@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require 'forwardable'
@@ -10,12 +11,8 @@ module RedSands
 
     def_delegators :@cards, :each, :size, :empty?, :shuffle, :sample, :pop, :push, :<<
 
-    def initialize(cards = [])
-      @cards = cards
-    end
-
-    def draw(count = 1)
-      cards.pop(count)
-    end
+    # so instead of having a separate model for hand, main deck, discard pile, etc
+    # we really just need to track that at the card level
+    
   end
 end

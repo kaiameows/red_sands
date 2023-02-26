@@ -1,16 +1,12 @@
 Feature: Player Setup
-  Scenario: Players have an associated Leader
-    When a player is created
-    Then the player does not have a leader
-
-  Scenario: Players have a score
-    When a player is created
+  Background: A player is created
+    Given a player is created
+  
+  Scenario: initial state
     Then the player should have a score of 0
-
-  Scenario: Players have a hand of zero or more cards
-    When a player is created
-    Then the player should have an empty hand
-
-  Scenario: Players start with a 10-card starter deck
-    When a player is created
-    Then the player has a starter deck of 10 cards
+    And the player should have a name
+    And the player should have an empty hand
+    And the player should have an empty discard pile
+    And the player should have a starter deck of 10 cards
+    And the player should have 3 reserve troops
+    And the player should have 0 diplomatic progress with 'all'

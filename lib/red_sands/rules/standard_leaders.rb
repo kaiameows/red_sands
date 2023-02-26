@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 # I should actually document the DSL files

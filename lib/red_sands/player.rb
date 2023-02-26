@@ -1,54 +1,38 @@
+# typed: false
 # frozen_string_literal: true
+
+require 'forwardable'
+require 'ostruct'
 
 module RedSands
   # Encapsulates State and Behavior of a Player
   class Player < BaseModel
+    extend Forwardable
     include Ma.subscriber
-    attr_reader :name, :score, :hand, :resources, :deck, :workers, :secret_powers, :alliances, :troops, :leader
+    attr_reader :name, :resources, :deck, :workers, :secret_powers, :leader
 
-    # rubocop:disable Metrics/ParameterLists
+    def_delegators :@resources, :gems, :money, :food, :score
+    def_delegators :@diplomatic_progress, :alliances, :progress
+    def_delegators :@barracks, :active_troops, :reserve_troops
+
     def initialize(name,
-                   score: 0,
-                   hand: [],
                    resources: default_resources,
                    deck: default_deck,
                    workers: 2,
-                   secret_powers: [],
-                   alliances: [],
-                   troops: default_troops)
+                   secret_powers: [])
       @name = name
-      @score = score
       @leader = nil
-      @hand = hand
       @resources = resources
       @deck = deck
       @workers = workers
       @secret_powers = secret_powers
-      @alliances = alliances
-      @troops = troops
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def default_resources
-      { gems: 0, money: 0, food: 2 }.tap { |r| r.default = 0 }
+      RedSands::Resources.new
     end
 
     def default_deck = RedSands::Cards::StarterCards
-
-    def default_troops
-      {
-        reserve: Array.new(2) { RedSands::Troops::NormalTroop.new },
-        active: []
-      }
-    end
-
-    def active_troops
-      troops[:active]
-    end
-
-    def reserve_troops
-      troops[:reserve]
-    end
 
     def choose_leader!(leader)
       # should only be called once

@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module RedSands
@@ -11,10 +12,6 @@ module RedSands
       def initialize(type: :normal, power: 2)
         @type = type
         @power = power
-      end
-
-      def self.[](**)
-        new(**)
       end
     end
   end

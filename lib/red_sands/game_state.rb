@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 require 'forwardable'
@@ -11,16 +12,19 @@ module RedSands
 
     def_delegators :@ruleset, :board, :decks
 
-    def self.current = @current ||= new(
-      ruleset: RedSands::Rules::RuleManager.current,
-      players: Array.new(2) { RedSands::Player.new }
-    )
+    class << self
+      def push(state) = states.push(state)
+      def states = @states ||= []
+      def current = states.last
+      def rewind(count = 1) = count.times { states.pop }
+      def new(*) = push(super)
+    end
 
     def initialize(ruleset:, players:, market: StandardMarket.new, phase: nil)
-      @ruleset = ruleset
-      @players = players
-      @market = market
-      @phase = phase
+      @ruleset = ruleset # should be immutable
+      @players = players # mutable
+      @market = market # mutable
+      @phase = phase # stateful
     end
 
     def game_over? = @game_over || false

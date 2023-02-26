@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module GameStateSteps
@@ -11,17 +12,17 @@ module GameStateSteps
     @game = RedSands::GameState.new(players: @players, ruleset: RedSands::Rules::StandardRules.new)
   end
 
-  step 'each player :should_have :count :resource' do |should_have, count, resource|
-    expectation = should_have ? :to : :not_to
-    @players.each do |player|
-      expect(player.send(resource)).send(expectation, eq(count.to_i))
+  step 'the :deck_type deck should be initialized' do |deck_type|
+    expect(@game.decks[deck_type]).not_to be_nil
+  end
+
+  step 'the permanent buyable card decks should be initialized' do
+    ['mother lode', 'tesseract', 'warrior'].each do |deck_type|
+      step "the #{deck_type} deck should be initialized"
     end
   end
 
-  step 'each player :should_have a :attribute' do |should_have, attribute|
-    expectation = should_have ? :to : :not_to
-    @players.each do |player|
-      expect(player.send(attribute)).send(expectation, be_a(String))
-    end
+  step 'the market should be initialized' do
+    expect(@game.market).not_to be_nil
   end
 end

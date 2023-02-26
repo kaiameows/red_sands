@@ -1,3 +1,4 @@
+# typed: false
 # frozen_string_literal: true
 
 module CommonSteps
@@ -13,15 +14,21 @@ module CommonSteps
     match(/should not/) { false }
   end
 
-  placeholder :might_have do
-    match(/has a/) { true }
+  placeholder :can_has do
+    match(/has/) { true }
 
-    match(/does not have a/) { false }
+    match(/does not have/) { false }
   end
 
   placeholder :resource do
-    match(/(power|gems|money|score|workers)/, &:to_sym)
-    match(/troops in reserve/) { :reserve_troops }
-    match(/active troops/) { :active_troops }
+    match(/(power|gems|money|score|workers|food)/, &:to_sym)
+  end
+
+  placeholder :deck_type do
+    match(/(secret power|buyable|tournament|tesseract|warrior|mother lode)/) { |type| type.gsub(' ', '_').to_sym }
+  end
+
+  placeholder :troop_status do
+    match(/active|reserve/) { |status| "#{status}_troops".to_sym }
   end
 end
