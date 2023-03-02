@@ -1,14 +1,21 @@
-# typed: false
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
   module Cards
-    FIELDS = %i[name power_cost faction sectors action_effect reveal_effect buy_effect trash_effect].freeze
-    DEFAULTS = FIELDS[1..].product([nil]).to_h.freeze
-    BaseCard = Data.define(*FIELDS) do
-      def initialize(**atts) = super(**DEFAULTS.merge(atts))
+    Factory = T.type_alias { RedSands::Rules::RuleFactory }
+    Deck = T.type_alias { T::Array[BaseCard] }
+    # BaseCard is the base class for all cards in the game
+    class BaseCard < BaseModel
+      extend T::Sig
 
-      def to_s = name
+      sig { returns(String) }
+      attr_reader :name
+
+      sig { params(name: String).void }
+      def initialize(name: '')
+        @name = name
+      end
     end
   end
 end

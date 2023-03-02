@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
@@ -6,6 +6,8 @@ module RedSands
     # EliteTroop is stronger and indestructible
     class EliteTroop < BaseTroop
       add_flag :destructible, false
+
+      sig { void }
       def initialize
         super(type: :elite, power: 3)
       end

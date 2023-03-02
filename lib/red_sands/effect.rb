@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
@@ -10,17 +10,35 @@ module RedSands
   # the cost should be a hash of resources to numbers
   # the description should be a string
   class Effect < BaseModel
-    attr_reader :description, :effect, :cost, :preconditions
+    extend T::Sig
 
-    def initialize(description:, effect:, cost: {}, preconditions: [])
+    sig { returns(String) }
+    attr_reader :description
+
+    sig { returns(Resources) }
+    attr_reader :cost
+
+    sig { returns(T.nilable(T.proc.returns(T::Boolean))) }
+    attr_reader :precondition
+
+    sig { returns(T.proc.void) }
+    attr_reader :effect
+
+    sig do
+      params(
+        description: String,
+        effect: T.proc.void,
+        cost: Resources,
+        precondition: T.nilable(T.proc.returns(T::Boolean))
+      ).void
+    end
+    def initialize(description:, effect:, cost: Resources.new, precondition: nil)
       @description = description
-      @effect = effect
+      @precondition = precondition
       @cost = cost
-      @preconditions = preconditions
+      @effect = effect
     end
 
-    def to_s
-      description
-    end
+    alias to_s description
   end
 end

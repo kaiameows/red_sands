@@ -17,10 +17,10 @@ module RedSands
       def states = @states ||= []
       def current = states.last
       def rewind(count = 1) = count.times { states.pop }
-      def new(*) = push(super)
+      def new(**kwargs) = super(**kwargs).tap { |state| push(state) }
     end
 
-    def initialize(ruleset:, players:, market: StandardMarket.new, phase: nil)
+    def initialize(players:, ruleset: Rules::StandardRules.new, market: StandardMarket.new, phase: nil)
       @ruleset = ruleset # should be immutable
       @players = players # mutable
       @market = market # mutable

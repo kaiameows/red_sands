@@ -9,7 +9,8 @@ module GameStateSteps
 
   step 'a standard game with :count players' do |count|
     @players = build_list(:player, count.to_i)
-    @game = RedSands::GameState.new(players: @players, ruleset: RedSands::Rules::StandardRules.new)
+    players = { players: @players }
+    @game = RedSands::GameState.new(**players)
   end
 
   step 'the :deck_type deck should be initialized' do |deck_type|

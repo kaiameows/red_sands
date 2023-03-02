@@ -8,11 +8,26 @@
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://docs.rubocop.org/rubocop/configuration
+require: rubocop-sorbet
+
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2
 
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
+
+Lint/MissingSuper:
+  Exclude:
+    - 'lib/red_sands/**/*.rb'
+
 Metrics/BlockLength:
+  Enabled: false
+
+Naming/BlockForwarding:
+  EnforcedStyle: explicit # sadness, but sorbet doesn't like the implicit style
+
+Style/AccessorGrouping: # again, sorbet is why we can't have nice things
   Enabled: false
 
 Style/Lambda:
@@ -21,9 +36,3 @@ Style/Lambda:
 Style/PerlBackrefs:
   Enabled: false
 
-Layout/SpaceInLambdaLiteral:
-  EnforcedStyle: require_space
-
-Lint/MissingSuper:
-  Exclude:
-    - 'lib/red_sands/**/*.rb'

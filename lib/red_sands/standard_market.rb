@@ -15,9 +15,9 @@ module RedSands
       {
         buyable: RedSands::Cards::StandardBuyableCards,
         secret_power: RedSands::Cards::StandardSecretPowerCards,
-        mother_lode: Array.new(10) { RedSands::Cards::MotherLodeCard.new },
-        tesseract: Array.new(6) { RedSands::Cards::TesseractCard.new },
-        warrior: Array.new(8) { RedSands::Cards::SavageWarriorCard.new },
+        mother_lode: Array.new(10) { RedSands::Cards::MotherLodeCard.dup },
+        tesseract: Array.new(6) { RedSands::Cards::TesseractCard.dup },
+        warrior: Array.new(8) { RedSands::Cards::SavageWarriorCard.dup },
         tournament: [] # TODO: Add tournament cards
       }
     end

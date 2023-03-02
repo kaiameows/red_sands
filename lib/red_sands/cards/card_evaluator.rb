@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
@@ -6,21 +6,39 @@ module RedSands
     # CardEvaluator provides a DSL for creating cards
     # it might actually need to just be the card class
     class CardEvaluator < RedSands::Rules::RuleFactory
-      def cards = @cards ||= []
+      extend T::Sig
 
-      def card(name, count: 1, &)
-        cards.push(*[RedSands::Rules::RuleFactory.new.tap do |evaluator|
-          evaluator.name name
-          evaluator.instance_eval(&)
-        end] * count)
+      sig { returns(Deck) }
+      def cards
+        @cards ||= T.let(nil, T.nilable(Deck))
+        @cards ||= []
       end
 
-      def build
-        klass = RedSands::Cards::StandardCard
-        cards.map do |card|
-          klass.new(**card.attributes.slice(*klass.members)).tap do |c|
-            boolean_attributes.each { |k, v| c.add_flag(k, v) }
-          end
+      sig do
+        params(
+          name: String,
+          count: Integer,
+          blk: T.proc.returns(T.untyped)
+        ).returns(Deck)
+      end
+      def card(name, count: 1, &blk)
+        cards.push(
+          *Array.new(count, build(RedSands::Rules::RuleFactory.new.tap do |evaluator|
+            evaluator.name name
+            evaluator.instance_eval(&blk)
+          end))
+        )
+      end
+
+      sig { params(evaluator: Factory).returns(BaseCard) }
+      def build(evaluator)
+        BaseCard.new(**evaluator.attributes)
+      end
+
+      sig { params(type: String, blk: T.proc.returns(RedSands::Effect)).returns(RedSands::Effect) }
+      def effect(type, &blk)
+        attributes["#{type}_effect".to_sym] = RedSands::Rules::EffectEvaluator.new.then do |evaluator|
+          evaluator.instance_eval(&blk)
         end
       end
     end

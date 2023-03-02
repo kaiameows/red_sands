@@ -31,4 +31,10 @@ module CommonSteps
   placeholder :troop_status do
     match(/active|reserve/) { |status| "#{status}_troops".to_sym }
   end
+
+  # rubocop:disable Lint/Debugger
+  step 'binding.pry' do
+    binding.pry
+  end
+  # rubocop:enable Lint/Debugger
 end

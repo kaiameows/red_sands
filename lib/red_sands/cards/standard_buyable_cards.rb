@@ -3,15 +3,15 @@
 
 module RedSands
   module Cards
-    StandardBuyableCards = RedSands::Cards::CardEvaluator.new.tap do |evaluator|
+    StandardBuyableCards = T.let(RedSands::Cards::MarketCardEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
         card 'Lady DeLys' do
           power_cost 7
-          faction 'Magic'
+          factions ['Magic']
           sectors ['Magic', 'Inhabited Sector', 'Uninhabited Sector', 'Hall of Heroes']
-          action_effect('draw 2') { draw 2 }
-          reveal_effect('gain 3 power and 1 combat power') { gain power: 3, combat_power: 1 }
-          buy_effect('gain 1 influence') { gain influence: 1 }
+          action_effect { draw 2 }
+          reveal_effect { gain power: 3, combat_power: 1 }
+          buy_effect { gain influence: 1 }
         end
 
         card 'Janissary Corps', count: 2 do
@@ -28,7 +28,7 @@ module RedSands
 
         card 'Sorcerer\'s Apprentice', count: 2 do
           power_cost 3
-          faction 'Magic'
+          factions ['Magic']
           sectors ['Inhabited Sector', 'Uninhabited Sector', 'Hall of Heroes']
           action_effect { draw 1 }
           reveal_effect { gain power: 1 }
@@ -36,7 +36,7 @@ module RedSands
 
         card 'Sorceress', count: 3 do
           power_cost 3
-          faction 'Magic'
+          factions ['Magic']
           sectors ['Magic', 'Hall of Heroes']
           reveal_effect do
             choice 'Choose one: gain 2 power or gain 2 combat power' do
@@ -57,7 +57,7 @@ module RedSands
         card 'Disciple of the Flame' do
           power_cost 5
           buy_effect { gain food: 1 }
-          faction 'Warrior'
+          factions ['Warrior']
           sectors ['Warrior', 'Inhabited Sector', 'Uninhabited Sector']
           reveal_effect do
             choice 'Retreat any number of troops' do
@@ -80,6 +80,6 @@ module RedSands
           reveal_effect { gain money: 3 }
         end
       end
-    end.build
+    end.cards, Deck)
   end
 end

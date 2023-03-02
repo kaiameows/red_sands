@@ -1,66 +1,81 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 require 'forwardable'
-require 'ostruct'
 
 module RedSands
   # Encapsulates State and Behavior of a Player
   class Player < BaseModel
+    extend T::Sig
     extend Forwardable
-    include Ma.subscriber
-    attr_reader :name, :resources, :deck, :workers, :secret_powers, :leader
+
+    sig { returns(String) }
+    attr_reader :name
+
+    sig { returns(Resources) }
+    attr_reader :resources
+
+    sig { returns(BaseDeck) }
+    attr_reader :deck
+
+    sig { returns(Barracks) }
+    attr_reader :barracks
+
+    sig { returns(Integer) }
+    attr_reader :workers
+
+    sig { returns(T::Array[Cards::SecretPowerCard]) }
+    attr_reader :secret_powers
+
+    sig { returns(T.nilable(Leader)) }
+    attr_reader :leader
+
+    sig { returns(DiplomaticProgress) }
+    attr_reader :diplomatic_progress
 
     def_delegators :@resources, :gems, :money, :food, :score
-    def_delegators :@diplomatic_progress, :alliances, :progress
+    def_delegators :@diplomatic_progress, :alliances
     def_delegators :@barracks, :active_troops, :reserve_troops
+    def_delegators :@deck, :hand, :discard_pile, :draw_pile, :exiled_pile
 
+    sig do
+      params(
+        name: String,
+        resources: Resources,
+        deck: BaseDeck,
+        workers: Integer,
+        secret_powers: T::Array[Cards::SecretPowerCard],
+        barracks: Barracks,
+        leader: T.nilable(Leader),
+        diplomatic_progress: DiplomaticProgress
+      ).void
+    end
+    # rubocop:disable Metrics/ParameterLists
     def initialize(name,
                    resources: default_resources,
                    deck: default_deck,
                    workers: 2,
-                   secret_powers: [])
+                   secret_powers: [],
+                   barracks: Barracks.new,
+                   leader: nil,
+                   diplomatic_progress: DiplomaticProgress.new)
       @name = name
-      @leader = nil
+      @leader = leader
       @resources = resources
       @deck = deck
       @workers = workers
       @secret_powers = secret_powers
+      @barracks = barracks
+      @diplomatic_progress = diplomatic_progress
     end
+    # rubocop:enable Metrics/ParameterLists
 
+    sig { returns(Resources) }
     def default_resources
-      RedSands::Resources.new
+      Resources.new
     end
 
-    def default_deck = RedSands::Cards::StarterCards
-
-    def choose_leader!(leader)
-      # should only be called once
-      @leader = leader
-      # instance eval or class eval?
-      # I kinda feel like it should be class eval
-      instance_eval(&leader.passive_power)
-    end
-
-    def add_resources(raw_resources)
-      resources.merge!(raw_resources.slice(:gems, :money, :food)) { |_, old, new| old + new }
-      broadcast TroopsAdded.new(player: self, troops: raw_resources[:troops]) if raw_resources.key?(:troops)
-      draw raw_resources[:secret_powers], from: :secret_powers if raw_resources.key?(:secret_powers)
-    end
-
-    def remove_resources(resources)
-      @resources.merge!(resources) { |_, old, new| old - new }
-    end
-
-    def draw(count)
-      # this should probably only let the player draw from their own deck
-      # drawing from other decks should probably be handled by those objects
-      hand << deck.draw(count)
-    end
-
-    def take_action
-      # give the player a choice of actions
-      # actions will vary depending on the current phase and what actions the player has already taken
-    end
+    sig { returns(BaseDeck) }
+    def default_deck = BaseDeck.new
   end
 end

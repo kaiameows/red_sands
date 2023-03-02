@@ -1,17 +1,14 @@
-# typed: false
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
   module Cards
-    class SavageWarriorCard < RedSands::Cards::BaseCard
-      def initialize
-        super(
-          name: 'Savage Warrior',
-          power_cost: 2,
-          faction: 'Warrior',
-          sectors: ['Uninhabited Sector', 'Inhabited Sector']
-        )
-      end
-    end
+    # always buyable card
+    SavageWarriorCard = MarketCard.new(
+      name: 'Savage Warrior',
+      power_cost: 2,
+      factions: [Faction::Warrior],
+      sectors: ['Uninhabited Sector', 'Inhabited Sector']
+    )
   end
 end

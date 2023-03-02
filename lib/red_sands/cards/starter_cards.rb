@@ -4,7 +4,7 @@
 module RedSands
   module Cards
     # StarterCards are the cards that are dealt to players at the start of the game
-    StarterCards = CardEvaluator.new.tap do |evaluator|
+    StarterCards = T.let(StarterCardEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
         card 'Stroke of Fortune' do
           action_effect { exile this_card }
@@ -39,6 +39,6 @@ module RedSands
           reveal_effect { gain power: 1 }
         end
       end
-    end.build
+    end.cards, Deck)
   end
 end
