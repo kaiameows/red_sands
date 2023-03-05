@@ -17,7 +17,7 @@ module RedSands
     event 'WorkerMove', *%i[player worker location card]
     event 'GainResouces', *%i[player resources]
     event 'GainCouncilSeat', :player, hooks: false
-    event 'GainSecretPower', *%i[player count], hooks: false
+    event 'GainTreasure', *%i[player count], hooks: false
     event 'GainInfluence', *%i[player faction count]
     event 'DrawCard', *%i[player count], hooks: false
     event 'DiscardCard', *%i[player count], hooks: false

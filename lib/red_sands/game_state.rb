@@ -31,20 +31,20 @@ module RedSands
     #    - reveal cards from their hand, gaining power with which to acquire buyable cards. Cards have a power value and may have additional effects on reveal
     #    - once a player has taken a reveal action, they may take a buy action, which allows them to buy a card from the market
     #    - once a player has taken a reveal action, they may not take any further actions until the next phase
-    #    - secret power cards can be played any time the player is able to take an action
-    #    - secret power cards may not be played during an opponent's action
+    #    - treasure cards can be played any time the player is able to take an action
+    #    - treasure cards may not be played during an opponent's action
     # 3. Tournament Phase
     #   - Players during the action phase may move troops to the tournament location
     #   - A player's total combat power is based on the number of troops they have in the tournament
     #   - Combat power can be increased by other card effects, but card effects do not provide any combat bonus unless the player has troops in the tournament
-    #   - Before combat is resolved, each player may take it in turn to play a tournament-category secret power card
+    #   - Before combat is resolved, each player may take it in turn to play a tournament-category treasure card
     #   - Combat is resolved by comparing the total combat power of each player
     #   - The player with the highest combat power wins the tournament and the first-place prize is awarded
     #     The second-highest combat power wins the second-place prize
     #   - If there are four players, the player with the third-highest combat power wins the third-place prize
     #   - If there is a tie, no one wins, and the tied players both receive the second-place prize
     #   - After the tournament is resolved, all non-indestructible troops are destroyed
-    #   - Some secret power cards can be played after a tournament is won
+    #   - Some treasure cards can be played after a tournament is won
     # 4. Resolution Phase
     #   - add gems to all gem accumulator locations
     #   - If the tournament deck is empty, or if a player has a score of 10 or more, the Endgame phase is triggered
@@ -110,6 +110,10 @@ module RedSands
     def player = players.first
 
     def opponents = players[1..]
+
+    def workers
+      players.flat_map(&:workers)
+    end
 
     def effect_evaluator = @effect_evaluator ||= EffectEvaluator.new(self)
 

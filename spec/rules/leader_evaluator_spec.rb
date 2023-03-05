@@ -4,9 +4,9 @@
 RSpec.describe RedSands::Rules::LeaderEvaluator do
   let(:dsl) do
     -> (_) do
-      active_power 'gain 1 secret power for 1 money' do
+      active_power 'gain 1 treasure for 1 money' do
         cost money: 1
-        effect { player.draw 1, from: :secret_powers }
+        effect { player.draw 1, from: :treasures }
       end
       passive_power 'when you gain gems, gain 1 fewer and draw a card' do
         def after_worker_move(player:, _worker:, location:, _card:)

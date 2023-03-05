@@ -55,10 +55,10 @@ module RedSands
       end
 
       sig { params(count: Integer).returns(Effect) }
-      def gain_secret_powers(count)
-        description = "Gain #{count} secret power cards."
+      def gain_treasures(count)
+        description = "Gain #{count} treasure cards."
         effect(description) do
-          publish(RedSands::Events::GainSecretPower, player:, count:)
+          publish(RedSands::Events::GainTreasure, player:, count:)
         end
       end
 

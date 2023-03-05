@@ -3,8 +3,8 @@
 
 module RedSands
   module Cards
-    # SecretPowerCard is a card that can be played to gain a secret power
-    class SecretPowerCard < T::Struct
+    # TreasureCard is a card that can be played to gain a treasure
+    class TreasureCard < T::Struct
       extend T::Sig
       prop :name, String
       prop :allowed_phases, T::Array[Symbol]

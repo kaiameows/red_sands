@@ -36,7 +36,7 @@ RSpec.describe RedSands::Events do
         GainResouces
         AfterGainResouces
         GainCouncilSeat
-        GainSecretPower
+        GainTreasure
         BeforeGainInfluence
         GainInfluence
         AfterGainInfluence

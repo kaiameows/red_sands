@@ -25,7 +25,7 @@ module CommonSteps
   end
 
   placeholder :deck_type do
-    match(/(secret power|buyable|tournament|tesseract|warrior|mother lode)/) { |type| type.gsub(' ', '_').to_sym }
+    match(/(treasure|buyable|tournament|tesseract|warrior|mother lode)/) { |type| type.gsub(' ', '_').to_sym }
   end
 
   placeholder :troop_status do

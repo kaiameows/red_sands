@@ -13,9 +13,9 @@ module RedSands
     StandardLeaders = LeaderCollectionEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
         leader 'Emperor Alrazar' do
-          active_power 'Pay 1 money to gain 1 secret power' do
+          active_power 'Pay 1 money to gain 1 treasure' do
             cost money: 1
-            effect { player.draw 1, from: :secret_powers }
+            effect { player.draw 1, from: :treasures }
           end
           passive_power 'Secret alliance with two factions' do
             def before_game_start

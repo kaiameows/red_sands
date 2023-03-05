@@ -12,7 +12,7 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
         end
         alliance_bonus troops: 2
         location 'Dogtown' do
-          gain secret_power: 1, money: 5, troops: 2
+          gain treasure: 1, money: 5, troops: 2
         end
       end
     }
@@ -39,7 +39,7 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
           end
           alliance_bonus troops: 2
           location 'Dogtown' do
-            gain secret_power: 1, money: 5, troops: 2
+            gain treasure: 1, money: 5, troops: 2
           end
         end
       }
@@ -61,7 +61,7 @@ RSpec.describe RedSands::Rules::BoardEvaluator do
           end
           alliance_bonus troops: 2
           location 'Dogtown' do
-            gain secret_power: 1, money: 5, troops: 2
+            gain treasure: 1, money: 5, troops: 2
           end
         end
       }

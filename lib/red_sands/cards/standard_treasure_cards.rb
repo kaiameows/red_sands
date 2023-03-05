@@ -3,11 +3,11 @@
 
 module RedSands
   module Cards
-    StandardSecretPowerCards = T.let(
-      SecretPowerCardEvaluator.new.tap do |evaluator|
+    StandardTreasureCards = T.let(
+      TreasureCardEvaluator.new.tap do |evaluator|
         plot_phase = T.let(%i[action buy], T::Array[Symbol])
         evaluator.instance_eval do
-          T.bind(self, SecretPowerCardEvaluator)
+          T.bind(self, TreasureCardEvaluator)
           card 'Friends in High Places' do
             T.bind(self, Rules::RuleFactory)
             allowed_phases [:action] # theoretically buy too but only the action phase makes sense
@@ -39,7 +39,7 @@ module RedSands
           end
         end
       end.cards.deep_freeze,
-      T::Array[SecretPowerCard]
+      T::Array[TreasureCard]
     )
   end
 end

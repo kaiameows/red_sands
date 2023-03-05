@@ -3,13 +3,13 @@
 
 module RedSands
   module Cards
-    # provides the DSL for defining secret power cards
-    class SecretPowerCardEvaluator < RedSands::Rules::RuleFactory
+    # provides the DSL for defining treasure cards
+    class TreasureCardEvaluator < RedSands::Rules::RuleFactory
       extend T::Sig
 
-      sig { returns(T::Array[SecretPowerCard]) }
+      sig { returns(T::Array[TreasureCard]) }
       def cards
-        @cards ||= T.let(nil, T.nilable(T::Array[SecretPowerCard]))
+        @cards ||= T.let(nil, T.nilable(T::Array[TreasureCard]))
         @cards ||= []
       end
 
@@ -18,7 +18,7 @@ module RedSands
           name: String,
           block: T.proc.returns(T.untyped)
         ).returns(
-          T::Array[SecretPowerCard]
+          T::Array[TreasureCard]
         )
       end
       def card(name, &block)
@@ -28,9 +28,9 @@ module RedSands
         end)
       end
 
-      sig { params(evaluator: RedSands::Rules::RuleFactory).returns(SecretPowerCard) }
+      sig { params(evaluator: RedSands::Rules::RuleFactory).returns(TreasureCard) }
       def build(evaluator)
-        SecretPowerCard.new(**evaluator.attributes.slice(:name, :allowed_phases, :effect))
+        TreasureCard.new(**evaluator.attributes.slice(:name, :allowed_phases, :effect))
       end
 
       sig { returns(RedSands::Rules::RuleFactory) }

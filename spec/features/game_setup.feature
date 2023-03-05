@@ -8,7 +8,7 @@ Feature: Initial Game Setup
   # in this file we just want to make sure the game initializes in a sane way
   # for n players
   Scenario: Standard Game Rules with 2 Players
-    Given the secret power deck should be initialized
+    Given the treasure deck should be initialized
     Then the buyable deck should be initialized
     And the tournament deck should be initialized
     And the permanent buyable card decks should be initialized

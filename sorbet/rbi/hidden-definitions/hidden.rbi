@@ -9731,13 +9731,13 @@ class RedSands::Events::GainResouces
   def self.new(*arg); end
 end
 
-class RedSands::Events::GainSecretPower
+class RedSands::Events::GainTreasure
   def count(); end
 
   def player(); end
 end
 
-class RedSands::Events::GainSecretPower
+class RedSands::Events::GainTreasure
   def self.[](*arg); end
 
   def self.members(); end

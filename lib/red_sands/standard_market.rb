@@ -14,7 +14,7 @@ module RedSands
     def standard_decks
       {
         buyable: RedSands::Cards::StandardBuyableCards,
-        secret_power: RedSands::Cards::StandardSecretPowerCards,
+        treasure: RedSands::Cards::StandardTreasureCards,
         mother_lode: Array.new(10) { RedSands::Cards::MotherLodeCard.dup },
         tesseract: Array.new(6) { RedSands::Cards::TesseractCard.dup },
         warrior: Array.new(8) { RedSands::Cards::SavageWarriorCard.dup },

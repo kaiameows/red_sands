@@ -11,7 +11,7 @@ module RedSands
           alliance_bonus troops: 2
           location 'Diplomatic Coup' do
             cost gems: 4
-            resources secret_power: 1, money: 5, troops: 2
+            resources treasure: 1, money: 5, troops: 2
           end
           location 'Diplomatic Mission' do
             resources money: 2
@@ -29,7 +29,7 @@ module RedSands
           end
         end
         diplomatic_sector 'Magic' do
-          alliance_bonus secret_power: 1
+          alliance_bonus treasure: 1
           location 'Magic Academy' do
             cost gems: 2
             effect 'Discard 1 card to draw 2 cards' do
@@ -45,14 +45,14 @@ module RedSands
             end
           end
           location 'Magic Shop' do
-            resources secret_power: 1
-            effect 'Take a secret power from an opponent who has four or more secret powers' do
-              four_or_more = opponents.select { |p| p.secret_powers.count >= 4 }
+            resources treasure: 1
+            effect 'Take a treasure from an opponent who has four or more treasures' do
+              four_or_more = opponents.select { |p| p.treasures.count >= 4 }
               if four_or_more.any?
                 choice do
                   four_or_more.each do |opponent|
-                    option "Take 1 secret power from #{opponent.name}" do
-                      opponent.secret_powers.shuffle.take 1
+                    option "Take 1 treasure from #{opponent.name}" do
+                      opponent.treasures.shuffle.take 1
                     end
                   end
                   option do_nothing
@@ -121,7 +121,7 @@ module RedSands
             effect { player.draw 3, from: :main_deck }
           end
           location 'Mystic Ruins' do
-            resources troops: 1, secret_power: 1
+            resources troops: 1, treasure: 1
           end
           location 'Trading Post' do
             resources troops: 1

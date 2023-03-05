@@ -24,8 +24,8 @@ module RedSands
     sig { returns(Integer) }
     attr_reader :workers
 
-    sig { returns(T::Array[Cards::SecretPowerCard]) }
-    attr_reader :secret_powers
+    sig { returns(T::Array[Cards::TreasureCard]) }
+    attr_reader :treasures
 
     sig { returns(T.nilable(Leader)) }
     attr_reader :leader
@@ -44,7 +44,7 @@ module RedSands
         resources: Resources,
         deck: BaseDeck,
         workers: Integer,
-        secret_powers: T::Array[Cards::SecretPowerCard],
+        treasures: T::Array[Cards::TreasureCard],
         barracks: Barracks,
         leader: T.nilable(Leader),
         diplomatic_progress: DiplomaticProgress
@@ -55,7 +55,7 @@ module RedSands
                    resources: default_resources,
                    deck: default_deck,
                    workers: 2,
-                   secret_powers: [],
+                   treasures: [],
                    barracks: Barracks.new,
                    leader: nil,
                    diplomatic_progress: DiplomaticProgress.new)
@@ -64,7 +64,7 @@ module RedSands
       @resources = resources
       @deck = deck
       @workers = workers
-      @secret_powers = secret_powers
+      @treasures = treasures
       @barracks = barracks
       @diplomatic_progress = diplomatic_progress
     end

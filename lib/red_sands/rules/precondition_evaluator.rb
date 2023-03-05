@@ -32,10 +32,10 @@ module RedSands
         end
       end
 
-      def secret_powers(count)
-        description = "has #{count} secret power cards."
+      def treasures(count)
+        description = "has #{count} treasure cards."
         precondition(description) do
-          player.secret_powers.size >= count
+          player.treasures.size >= count
         end
       end
     end
