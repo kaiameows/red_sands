@@ -25,7 +25,7 @@ module RedSands
       private
 
       def hook_names_for_event(event)
-        ["before_#{event}", event, "after_#{event}"]
+        ["before_#{event}", event, "after_#{event}"].map(&:to_sym)
       end
     end
   end

@@ -4,23 +4,17 @@
 RSpec.describe RedSands::Events::Publisher do
   let(:subject) do
     Class.new do
-      include Ma.publisher
+      include Wisper::Publisher
       include RedSands::Events::Publisher
     end.new
   end
 
-  before do
-    stub_const('RedSands::Events::TestEvent', Class.new)
-    stub_const('RedSands::Events::BeforeTestEvent', Class.new)
-    stub_const('RedSands::Events::AfterTestEvent', Class.new)
-  end
-
   describe '#publish' do
     it 'broadcasts before and after events' do
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::BeforeTestEvent))
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::TestEvent))
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::AfterTestEvent))
-      subject.publish(RedSands::Events::TestEvent, **{})
+      %w[before_test test after_test].each do |event_name|
+        expect(subject).to receive(:broadcast).with(event_name.to_sym, **{})
+      end
+      subject.publish(:test, **{})
     end
   end
 
@@ -28,11 +22,11 @@ RSpec.describe RedSands::Events::Publisher do
     let(:blk) { double(call: 0) }
 
     it 'broadcasts a before event, the original event, runs the block, then broadcasts an after event' do
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::BeforeTestEvent))
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::TestEvent))
-      expect(subject).to receive(:broadcast).with(an_instance_of(RedSands::Events::AfterTestEvent))
+      %w[before_test test after_test].each do |event_name|
+        expect(subject).to receive(:broadcast).with(event_name.to_sym, **{})
+      end
       expect(blk).to receive(:call).with(0)
-      subject.with_hooks(RedSands::Events::TestEvent) { blk.call(0) }
+      subject.with_hooks(:test) { blk.call(0) }
     end
   end
 end
