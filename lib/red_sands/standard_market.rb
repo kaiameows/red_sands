@@ -23,5 +23,9 @@ module RedSands
     end
 
     def buyable_cards = @buyable_cards || Array.new(5) { decks[:buyable].pop }
+
+    def inspect
+      "#<StandardMarket: 0x#{object_id.to_s(16)}}>"
+    end
   end
 end

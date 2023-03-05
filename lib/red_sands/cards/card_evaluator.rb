@@ -23,10 +23,14 @@ module RedSands
       end
       def card(name, count: 1, &blk)
         cards.push(
-          *Array.new(count, build(RedSands::Rules::RuleFactory.new.tap do |evaluator|
-            evaluator.name name
-            evaluator.instance_eval(&blk)
-          end))
+          *Array.new(count) do
+            build(
+              RedSands::Rules::RuleFactory.new.tap do |evaluator|
+                evaluator.name name
+                evaluator.instance_eval(&blk)
+              end
+            )
+          end
         )
       end
 

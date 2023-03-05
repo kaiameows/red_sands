@@ -4,7 +4,7 @@
 module RedSands
   # rubocop:disable Metrics/ModuleLength
   module Boards
-    # note that this is a constant, not a class
+    # NOTE: this is a constant, not a class
     StandardBoard = RedSands::Rules::BoardEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
         diplomatic_sector 'Empire' do

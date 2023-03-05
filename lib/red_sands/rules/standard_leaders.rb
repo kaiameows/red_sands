@@ -18,7 +18,7 @@ module RedSands
             effect { player.draw 1, from: :secret_powers }
           end
           passive_power 'Secret alliance with two factions' do
-            def on_before_game_start
+            def before_game_start
               super
               choice 'Pick two factions to ally with' do
                 game_state.board.diplomatic_sectors.each do |sector|
@@ -36,7 +36,9 @@ module RedSands
             end
           end
           passive_power 'Start the game with 1 extra gem and 1 extra money' do
-            on(RedSands::Events::BeforeGameStart) { gain gems: 1, money: 1 }
+            def on_before_game_start
+              broadcast(:gain_resources, player:, resources: { gems: 1, money: 1 })
+            end
           end
         end
 
@@ -88,7 +90,8 @@ module RedSands
         leader 'General Kael' do
           active_power('gain 1 gems') { effect { gain gems: 1 } }
           passive_power 'when you gain a Council seat, choose a faction to increase your diplomatic progress with' do
-            on(RedSands::Events::GainCouncilSeat) do
+            def gain_council_seat(_player:)
+              # broadcast an event instead?
               choice 'Choose a faction to increase your diplomatic progress with' do
                 board.sectors.each do |sector|
                   option sector.name do
@@ -103,11 +106,11 @@ module RedSands
         leader 'Estrella Marcos' do
           active_power('Gain 1 food') { effect { gain food: 1 } }
           passive_power 'If you gather gems from any Uninhabited Sector location, gain 1 fewer and draw a card' do
-            on(RedSands::Events::AfterWorkerMove) do
-              if player == self && event.move.sector == 'Uninhabited Sector'
-                cost gems: 1
-                draw 1
-              end
+            def after_worker_move(player:, _worker:, location:, _card:)
+              return unless player == self && location.sector == 'Uninhabited Sector'
+
+              cost gems: 1
+              draw 1
             end
           end
         end
@@ -159,8 +162,8 @@ module RedSands
             effect { gain money: 1 }
           end
           passive_power 'Whenever you pay money to move to a location, draw a card' do
-            on(RedSands::Events::AfterWorkerMove) do
-              draw 1 if player == self && event.move.cost.money.positive?
+            def after_worker_move(player:, _worker:, location:, _card:)
+              draw 1 if player == self && location.cost[:money].positive?
             end
           end
         end

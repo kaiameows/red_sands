@@ -7,7 +7,6 @@ module RedSands
   module Rules
     # PreconditionEvaluator is similar to EffectEvaluator
     class PreconditionEvaluator
-      include Ma.publisher
       include Events::Publisher
       extend Forwardable
 

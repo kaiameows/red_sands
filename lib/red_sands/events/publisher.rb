@@ -4,28 +4,28 @@
 module RedSands
   # Events is the events module. What do you want?
   module Events
-    # Publisher extends Ma::Publisher to trigger Before and After events as well as the original event
+    # Publisher extends Wisper::Publisher to trigger Before and After events as well as the original event
     module Publisher
+      extend Wisper::Publisher
       def publish(event, **args)
         hook_names_for_event(event).each do |event_name|
-          broadcast(RedSands.const_get(event_name).new(**args))
+          broadcast(event_name, **args)
         end
       end
 
       # this really seems like it should be part of the event
       def with_hooks(event)
-        hooks = hook_names_for_event(event).map { |event_name| RedSands.const_get(event_name).new }
-        broadcast(hooks.first)
-        broadcast(hooks[1])
+        before, _, after = hook_names_for_event(event)
+        broadcast(before)
+        broadcast(event)
         yield
-        broadcast(hooks.last)
+        broadcast(after)
       end
 
-      private 
+      private
 
       def hook_names_for_event(event)
-        *namespace, name = event.name.split('::')
-        ["#{namespace.join('::')}::Before#{name}", event.name, "#{namespace.join('::')}::After#{name}"]
+        ["before_#{event}", event, "after_#{event}"]
       end
     end
   end

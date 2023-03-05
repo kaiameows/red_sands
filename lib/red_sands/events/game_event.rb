@@ -4,7 +4,7 @@
 module RedSands
   module Events
     # GameEvent is the base class for all game events
-    class GameEvent < Ma::Event
+    class GameEvent
     end
   end
 end

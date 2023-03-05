@@ -3,15 +3,10 @@
 
 module RedSands
   module Events
-    class TroopListener
-      include Ma.subscriber
-
-      on(TurnEnd) do |event|
-        turn_end_active_troops(event.game_state)
-      end
-
-      def turn_end_active_troops(game_state)
-        game_state.each_player do |player|
+    # cleans up dead troops after a tournament
+    class TroopListener < RedSands::Events::BaseListener
+      def on_tournament_end(players:)
+        players.each do |player|
           player.reserve_troops.push += player.active_troops.delete_if(&:destructible?)
           player.active_troops.clear
         end

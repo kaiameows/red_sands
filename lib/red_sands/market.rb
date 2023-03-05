@@ -17,5 +17,9 @@ module RedSands
     def buy_card(card)
       publish(RedSands::Events::BuyCard, player: GameState.current.player, card:, market: self)
     end
+
+    def inspect
+      "#<Market: #{available_cards.map(&:name).join(', ')}>"
+    end
   end
 end

@@ -10,10 +10,6 @@ module RedSands
           super("Precondition not met for event #{event.class.name}")
         end
       end
-
-      include Ma.subscriber
-      # events will probably trigger other events pretty regularly
-      include Ma.publisher
       include RedSands::Events::Publisher
 
       def game_state

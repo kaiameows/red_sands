@@ -77,5 +77,9 @@ module RedSands
 
     sig { returns(BaseDeck) }
     def default_deck = BaseDeck.new
+
+    def inspect
+      "#<#{self.class.name} #{name}>"
+    end
   end
 end

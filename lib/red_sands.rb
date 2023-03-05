@@ -3,9 +3,9 @@
 
 require 'ice_nine'
 require 'ice_nine/core_ext/object'
-require 'ma'
 require 'sorbet-runtime'
 require 'state_machines'
+require 'wisper'
 require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem
 # loader.ignore("#{__dir__}/red_sands/rules/*_leaders.rb")

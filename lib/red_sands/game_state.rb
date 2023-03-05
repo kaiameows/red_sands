@@ -7,48 +7,17 @@ module RedSands
   # GameState encapsulates the state of the game
   class GameState < BaseModel
     extend Forwardable
-    attr_reader :players
-    attr_accessor :ruleset, :market
-
-    def_delegators :@ruleset, :board, :decks
 
     class << self
       def push(state) = states.push(state)
+      def clear = states.clear
       def states = @states ||= []
       def current = states.last
       def rewind(count = 1) = count.times { states.pop }
       def new(**kwargs) = super(**kwargs).tap { |state| push(state) }
     end
 
-    def initialize(players:, ruleset: Rules::StandardRules.new, market: StandardMarket.new, phase: nil)
-      @ruleset = ruleset # should be immutable
-      @players = players # mutable
-      @market = market # mutable
-      @phase = phase # stateful
-    end
-
-    def game_over? = @game_over || false
-
-    def game_over!
-      @game_over = true
-    end
-
-    def each_player(&)
-      players.enum_for(:each) unless block_given?
-      players.each(&)
-    end
-
-    def player = players.first
-
-    def opponents = players[1..]
-
-    def effect_evaluator = @effect_evaluator ||= EffectEvaluator.new(self)
-
-    def start
-      publish(RedSands::Events::GameStart)
-      main_game_loop until current.game_over?
-      broadcast(RedSands::Events::GameEnd.new)
-    end
+    def_delegators :@ruleset, :board, :decks
 
     # Red Sands is a turn-based game
     # Each turn consists of the following phases:
@@ -80,45 +49,96 @@ module RedSands
     #   - add gems to all gem accumulator locations
     #   - If the tournament deck is empty, or if a player has a score of 10 or more, the Endgame phase is triggered
     #   - Otherwise, the next turn begins
-    def main_game_loop
-      with_hooks(RedSands::Events::Turn) do
-        draw_phase
-        action_phase
-        tournament_phase
-        resolution_phase
+    state_machine :phase, initial: :setup do
+      around_transition do |game, transition, block|
+        # fires the before and after events
+        game.with_hooks(transition.event, &block)
+      end
+      event :start do
+        transition setup: :draw
+      end
+
+      event :action_phase do
+        transition draw: :action
+      end
+
+      event :buy_phase do
+        transition action: :buy, if: :action_phase_over?
+      end
+
+      # if no player has any active troops, the tournament phase is skipped
+      event :tournament_phase do
+        transition buy: :tournament, if: :buy_phase_over?, unless: :no_active_troops?
+        transition buy: :resolution, if: :buy_phase_over?
+      end
+
+      event :resolution_phase do
+        transition tournament: :resolution, if: :tournament_phase_over?
+      end
+
+      event :end_turn do
+        transition resolution: :end_game, if: :endgame_condition_met?
+        transition resolution: :draw
       end
     end
 
-    def draw_phase
-      publish(RedSands::Events::DrawPhase)
+    attr_reader :players
+    attr_accessor :ruleset, :market, :tournament_deck
+
+    def initialize(
+      players:,
+      ruleset: Rules::StandardRules.new,
+      market: StandardMarket.new,
+      tournament_deck: generate_tournament_deck
+    )
+      super() # required for state_machine
+      @ruleset = ruleset # should be immutable
+      @players = players # mutable
+      @market = market # mutable
+      @tournament_deck = tournament_deck # mutable
     end
 
-    def action_phase
-      publish(RedSands::Events::ActionPhase)
+    def generate_tournament_deck
+      [] # TODO: write this
     end
 
-    def tournament_phase
-      publish(RedSands::Events::TournamentPhase)
+    def each_player(&block)
+      players.enum_for(:each) unless block_given?
+      players.each(&block)
     end
 
-    def resolution_phase
-      publish(RedSands::Events::ResolutionPhase)
-    end
+    def player = players.first
+
+    def opponents = players[1..]
+
+    def effect_evaluator = @effect_evaluator ||= EffectEvaluator.new(self)
+
+    private
 
     def endgame_condition_met?
-      decks[:tournament].empty? || players.map(&:score).max >= 10
+      tournament_deck.empty? || players.map(&:score).max >= 10
     end
 
-    def endgame_phase
-      # this could just as easily be an event
-      broadcast(RedSands::Events::BeforeEndgamePhase.new)
-      broadcast(RedSands::Events::EndgamePhase.new)
-      each_player(&:take_action) # players may play any secret power cards they have, in turn, with each player getting one chance to play a card
-      # the player with the highest score wins. If there is a tie, the tiebreaker values are, in order: gems, money, water, reserve troops
-      winner = players.max_by do |player|
-        [player.score, player.gems, player.money, player.water, player.reserve_troops]
+    def action_phase_over?
+      players.all?(&:done_with_actions?)
+    end
+
+    def buy_phase_over?
+      players.all?(&:done_with_buys?)
+    end
+
+    def tournament_phase_over?
+      players.all?(&:done_with_tournament?)
+    end
+
+    def no_active_troops?
+      players.none? { |player| player.active_troops.any? }
+    end
+
+    def inspect
+      %w[object_id phase players market].reduce("#<#{self.class.name}:0x#{object_id.to_s(16)}") do |str, attr|
+        str << " #{attr}=#{send(attr).inspect}"
       end
-      broadcast(RedSands::Events::PlayerWins.new(player: winner))
     end
   end
 end
