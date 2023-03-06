@@ -89,17 +89,25 @@ module RedSands
       players:,
       ruleset: Rules::StandardRules.new,
       market: StandardMarket.new,
-      tournament_deck: generate_tournament_deck
+      tournament_deck: generate_tournament_deck,
+      workers: generate_workers(players)
     )
       super() # required for state_machine
       @ruleset = ruleset # should be immutable
       @players = players # mutable
       @market = market # mutable
       @tournament_deck = tournament_deck # mutable
+      @workers = workers # mutable
     end
 
     def generate_tournament_deck
       [] # TODO: write this
+    end
+
+    def generate_workers(players)
+      players.flat_map do |player|
+        Array.new(2) { Worker.new(player:) }
+      end
     end
 
     def each_player(&block)

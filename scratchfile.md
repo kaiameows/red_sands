@@ -9,18 +9,19 @@ But like the phases of the game are probably very well modeled by a state machin
 ## GameState
   * the phase of the turn
   * the current player
-  * whether the game is over
+  * which players have which diplomatic alliances
 
 ## Player
   * whether the player has completed their actions for the phase of the turn (i.e. `done?`)
   * whether the player has completed their action phase (i.e. `done_with_actions?`)
   * whether the player has completed their buy phase (i.e. `done_with_buys?`)
-  * whether the player has an alliance with each faction
 
 ## Locations
-  * locations can have a worker present
-  * location occupation may or may not block other workers from occupying the same location
-  * in the expansion some locations have further state
+  * locations and the board probably shouldn't have state
+
+## Workers
+  * workers can be deployed or not
+  * if deployed, they have a location
 
 ## Leaders
   * One specific leader has some ability that might be modeled as a state machine
@@ -28,3 +29,7 @@ But like the phases of the game are probably very well modeled by a state machin
 ## Cards
   * cards can be played, discarded, in hand, or in the main deck
 
+
+
+workers need a reference to player, and locations need a reference to sector
+sectors don't need to exist and workers should be nilable on gamestate(?) and created on demand with a reference to the player object
