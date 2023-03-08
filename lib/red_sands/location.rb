@@ -1,24 +1,43 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
   # Locations are the places where players can collect resources
   class Location < BaseModel
-    include RedSands::Concerns::Flaggable
-    attr_reader :name, :resources, :agents, :effect, :sector_name, :cost
+    extend T::Sig
+    include Concerns::Flaggable
 
-    def initialize(name:, sector_name:, cost: {}, resources: {}, effect: nil, agents: [])
+    sig { returns(String) }
+    attr_reader :name
+
+    sig { returns(T.nilable(Effect)) }
+    attr_reader :resources
+
+    sig { returns(T.nilable(Effect)) }
+    attr_reader :effect
+
+    sig { returns(Sector) }
+    attr_reader :sector
+
+    sig { returns(T.nilable(Resources)) }
+    attr_reader :cost
+
+    sig do
+      params(
+        name: String,
+        sector: Sector,
+        cost: T.nilable(Resources),
+        resources: T.nilable(Effect),
+        effect: T.nilable(Effect)
+      ).void
+    end
+    def initialize(name:, sector:, cost: Resources.none, resources: nil, effect: nil)
       @name = name
       @resources = resources
       @cost = cost
       # effect should be a GameEffect with a description, cost, precondition, and effect
       @effect = effect
-      @agents = agents
-      @sector_name = sector_name
+      @sector = sector
     end
-
-    def occupied? = agents.any?
-
-    def sector = @sector ||= RedSands::GameState.current.board.sectors[sector_name]
   end
 end

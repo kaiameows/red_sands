@@ -1,23 +1,35 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
   # Board encapsulates the game board state
   class Board < BaseModel
-    attr_reader :sectors
+    extend T::Sig
+    SectorHash = T.type_alias { T::Hash[Sector, T::Array[Location]] }
+    SectorPair = T.type_alias { [Sector, T::Array[Location]] }
+    sig { returns(T::Array[Location]) }
+    attr_reader :locations
 
-    def initialize(name:, sectors: [])
-      @name = name
-      @sectors = sectors
+    sig { params(locations: T::Array[Location]).void }
+    def initialize(locations: [])
+      @locations = locations
     end
 
-    def each_sector(&)
+    sig do
+      params(
+        block: T.nilable(T.proc.params(arg0: SectorPair).returns(BasicObject))
+      ).returns(
+        T.any(SectorHash, T::Enumerator[SectorPair])
+      )
+    end
+    def each_sector(&block)
       sectors.enum_for(:each) unless block_given?
-      sectors.each(&)
+      sectors.each(&block)
     end
 
-    def locations
-      sectors.flat_map(&:locations)
+    sig { returns(SectorHash) }
+    def sectors
+      locations.group_by(&:sector)
     end
   end
 end

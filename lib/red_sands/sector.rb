@@ -1,15 +1,27 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module RedSands
-  # Sectors are groups of locations on the board
-  class Sector < BaseModel
-    include RedSands::Concerns::Flaggable
-    attr_reader :name, :locations
+  # sector is an enum
+  class Sector < T::Enum
+    enums do
+      Empire = new
+      Guild = new
+      Magic = new
+      Warrior = new
+      Inhabited = new
+      Uninhabited = new
+      HallOfHeroes = new
+      Alchemist = new
+    end
 
-    def initialize(name:, locations: [])
-      @name = name
-      @locations = locations
+    class << self
+      extend T::Sig
+
+      sig { returns(T::Array[Sector]) }
+      def diplomatic
+        [Empire, Guild, Magic, Warrior]
+      end
     end
   end
 end

@@ -16,11 +16,11 @@ module RedSands
       end
 
       def standard_board
-        RedSands::Boards::StandardBoard
+        Boards::StandardBoard
       end
 
       def standard_market
-        RedSands::StandardMarket.new
+        StandardMarket.new
       end
     end
   end

@@ -5,9 +5,9 @@ module RedSands
   # rubocop:disable Metrics/ModuleLength
   module Boards
     # NOTE: this is a constant, not a class
-    StandardBoard = RedSands::Rules::BoardEvaluator.new.tap do |evaluator|
+    StandardBoard = Rules::BoardEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
-        diplomatic_sector 'Empire' do
+        sector Sector::Empire do
           alliance_bonus troops: 2
           location 'Diplomatic Coup' do
             cost gems: 4
@@ -17,7 +17,7 @@ module RedSands
             resources money: 2
           end
         end
-        diplomatic_sector 'Guild' do
+        sector Sector::Guild do
           alliance_bonus money: 2
           location 'Guild Hall' do
             cost gems: 6
@@ -28,40 +28,37 @@ module RedSands
             resources travel_pass: 1
           end
         end
-        diplomatic_sector 'Magic' do
+        sector Sector::Magic do
           alliance_bonus treasure: 1
           location 'Magic Academy' do
             cost gems: 2
             effect 'Discard 1 card to draw 2 cards' do
-              unless player.hand.empty?
-                choice do
-                  option 'Discard 1 card to draw 2 cards' do
-                    discard 1
-                    draw 2, from: :main_deck
-                  end
-                  option do_nothing
+              precondition { !player.hand.empty? }
+              choice do
+                option 'Discard 1 card to draw 2 cards' do
+                  discard 1
+                  draw 2
                 end
+                option do_nothing
               end
             end
           end
           location 'Magic Shop' do
             resources treasure: 1
             effect 'Take a treasure from an opponent who has four or more treasures' do
-              four_or_more = opponents.select { |p| p.treasures.count >= 4 }
-              if four_or_more.any?
-                choice do
-                  four_or_more.each do |opponent|
-                    option "Take 1 treasure from #{opponent.name}" do
-                      opponent.treasures.shuffle.take 1
-                    end
+              precondition { opponents.any? { |p| p.treasures.count >= 4 } }
+              choice do
+                four_or_more.each do |opponent|
+                  option "Take 1 treasure from #{opponent.name}" do
+                    opponent.treasures.shuffle.take 1
                   end
-                  option do_nothing
                 end
+                option do_nothing
               end
             end
           end
         end
-        diplomatic_sector 'Warrior' do
+        sector Sector::Warrior do
           alliance_bonus food: 2
           location 'Warrior Barracks' do
             cost food: 1
@@ -73,19 +70,19 @@ module RedSands
             combat_zone
           end
         end
-        sector 'Hall of Heroes' do
+        sector Sector::HallOfHeroes do
           location 'High Council' do
             cost money: 5
-            resources :high_council_seat
+            effect('Gain a seat on the High Council') { high_council_seat }
           end
           location 'Assassin' do
             cost money: 8
-            resources :assassin
+            effect('Gain an extra worker permanently') { gain_assassin }
           end
           location 'Hired Gun' do
             cost money: 2
-            resources :hired_gun
-            draw 1, from: :main_deck
+            effect('Gain an extra worker for the round') { gain_hired_gun }
+            draw 1
           end
           location 'Hire Mercenaries' do
             cost money: 4
@@ -95,8 +92,8 @@ module RedSands
             resources troops: 1, power: 1
           end
         end
-        sector 'Smugglers' do
-          location 'Extortion' do
+        sector Sector::Alchemist do
+          location 'Alchemy' do
             resources money: 3
           end
           location 'Sell Gems' do
@@ -111,36 +108,36 @@ module RedSands
             end
           end
         end
-        planet_sector 'Inhabited' do
+        sector Sector::Inhabited do
           location 'Farmlands' do
-            requirement { player.diplomatic_progress['Warriors'] >= 2 }
+            requirement { player.diplomatic_progress[Faction::Warrior] >= 2 }
             resources food: 1, troops: 1
           end
           location 'Tech Center' do
             cost food: 2
-            effect { player.draw 3, from: :main_deck }
+            effect('draw 3 cards') { draw 3 }
           end
           location 'Mystic Ruins' do
             resources troops: 1, treasure: 1
           end
           location 'Trading Post' do
             resources troops: 1
-            effect { player.draw 1, from: :main_deck }
+            effect('draw 1 card') { draw 1 }
           end
         end
-        planet_sector 'Uninhabited' do
+        sector Sector::Uninhabited do
           location 'Anvil of the Gods' do
             cost food: 2
-            effect { player.resources[:gems] += 3 + board.location('Anvil of the Gods').accumulated_gems }
+            resources gems: 3
             gem_accumulator
           end
           location 'Crystal Caves' do
             cost food: 1
-            effect { player.resources[:gems] += 2 + board.location('Crystal Caves').accumulated_gems }
+            resources gems: 2
             gem_accumulator
           end
           location 'Dark Forest' do
-            effect { player.resources[:gems] += 1 + board.location('Dark Forest').accumulated_gems }
+            resources gems: 1
             gem_accumulator
           end
         end

@@ -13,11 +13,11 @@ module RedSands
 
     def standard_decks
       {
-        buyable: RedSands::Cards::StandardBuyableCards,
-        treasure: RedSands::Cards::StandardTreasureCards,
-        mother_lode: Array.new(10) { RedSands::Cards::MotherLodeCard.dup },
-        tesseract: Array.new(6) { RedSands::Cards::TesseractCard.dup },
-        warrior: Array.new(8) { RedSands::Cards::SavageWarriorCard.dup },
+        buyable: Cards::StandardBuyableCards,
+        treasure: Cards::StandardTreasureCards,
+        mother_lode: Array.new(10) { Cards::MotherLodeCard.dup },
+        tesseract: Array.new(6) { Cards::TesseractCard.dup },
+        warrior: Array.new(8) { Cards::SavageWarriorCard.dup },
         tournament: [] # TODO: Add tournament cards
       }
     end

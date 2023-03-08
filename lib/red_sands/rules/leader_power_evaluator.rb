@@ -7,7 +7,7 @@ module RedSands
     # it probably just needs to inherit from RuleFactory
     class LeaderPowerEvaluator < RuleFactory
       def build
-        RedSands::LeaderPower.new(**attributes.slice(:description, :cost, :effect))
+        LeaderPower.new(**attributes.slice(:description, :cost, :effect))
       end
     end
   end

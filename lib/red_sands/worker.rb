@@ -12,7 +12,7 @@ module RedSands
     attr_accessor :location
 
     sig { params(player: Player, location: T.nilable(Location)).void }
-    def initialize(player, location: nil)
+    def initialize(player:, location: nil)
       @player = player
       @location = location
     end

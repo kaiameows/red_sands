@@ -18,7 +18,7 @@ module RedSands
       end
 
       def build
-        RedSands::Leader.new(**attributes.slice(:name, :active_power, :passive_power_description)).tap do |leader|
+        Leader.new(**attributes.slice(:name, :active_power, :passive_power_description)).tap do |leader|
           boolean_attributes.each { |k, v| leader.add_flag(k, v) }
           leader.singleton_class.class_eval(&attributes[:passive_power])
         end

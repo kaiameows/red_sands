@@ -4,7 +4,7 @@
 module RedSands
   module Events
     # GemMerchantListener is a listener for the 'Gem Merchant' card
-    class GemMerchantListener < RedSands::Events::BaseListener
+    class GemMerchantListener < Events::BaseListener
       def after_worker_move(player:, _worker:, location:, card:)
         return unless card.name == 'Gem Merchant' && location.sector.name == 'Uninhabited Sector'
 

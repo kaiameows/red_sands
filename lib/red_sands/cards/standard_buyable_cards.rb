@@ -3,7 +3,7 @@
 
 module RedSands
   module Cards
-    StandardBuyableCards = T.let(RedSands::Cards::MarketCardEvaluator.new.tap do |evaluator|
+    StandardBuyableCards = T.let(Cards::MarketCardEvaluator.new.tap do |evaluator|
       evaluator.instance_eval do
         card 'Lady DeLys' do
           power_cost 7
@@ -63,7 +63,7 @@ module RedSands
             choice 'Retreat any number of troops' do
               player.active_troops.times do |i|
                 option("Retreat #{i + 1} troops") do
-                  broadcast(RedSands::Events::RetreatTroops.new(player:, troops: i + 1))
+                  broadcast(Events::RetreatTroops.new(player:, troops: i + 1))
                 end
               end
             end

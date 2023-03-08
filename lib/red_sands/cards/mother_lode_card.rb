@@ -11,11 +11,11 @@ module RedSands
       name: 'Mother Lode',
       power_cost: 9,
       buy_effect: -> {
-        T.bind(self, RedSands::Rules::EffectEvaluator)
+        T.bind(self, Rules::EffectEvaluator)
         gain score: 1
       },
       reveal_effect: -> {
-        T.bind(self, RedSands::Rules::EffectEvaluator)
+        T.bind(self, Rules::EffectEvaluator)
         gain gem: 1
       }
     )

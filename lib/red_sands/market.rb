@@ -15,7 +15,7 @@ module RedSands
     def available_cards = @available_cards ||= Array.new(5) { decks[:buyable].pop }
 
     def buy_card(card)
-      publish(RedSands::Events::BuyCard, player: GameState.current.player, card:, market: self)
+      publish(Events::BuyCard, player: GameState.current.player, card:, market: self)
     end
 
     def inspect

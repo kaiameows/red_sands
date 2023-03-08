@@ -82,7 +82,7 @@ module RedSands
           active_power('draw a card') { effect { draw 1 } }
           passive_power 'look at the top card of your deck at any time' do
             def available_actions
-              super << RedSands::Actions::LookAtTopCard.new(player: self)
+              super << Actions::LookAtTopCard.new(player: self)
             end
           end
         end
@@ -95,7 +95,7 @@ module RedSands
               choice 'Choose a faction to increase your diplomatic progress with' do
                 board.sectors.each do |sector|
                   option sector.name do
-                    broadcast(RedSands::Events::GainDiplomaticProgress.new(player:, sector:, amount: 1))
+                    broadcast(Events::GainDiplomaticProgress.new(player:, sector:, amount: 1))
                   end
                 end
               end
@@ -149,7 +149,7 @@ module RedSands
             end
 
             def buy_reserved_card
-              RedSands::Actions::BuyReservedCard.new(player: self)
+              Actions::BuyReservedCard.new(player: self)
             end
 
             def reserved_market_card? = @reserved_market_card.present?

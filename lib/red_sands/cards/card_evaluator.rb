@@ -5,7 +5,7 @@ module RedSands
   module Cards
     # CardEvaluator provides a DSL for creating cards
     # it might actually need to just be the card class
-    class CardEvaluator < RedSands::Rules::RuleFactory
+    class CardEvaluator < Rules::RuleFactory
       extend T::Sig
 
       sig { returns(Deck) }
@@ -25,7 +25,7 @@ module RedSands
         cards.push(
           *Array.new(count) do
             build(
-              RedSands::Rules::RuleFactory.new.tap do |evaluator|
+              Rules::RuleFactory.new.tap do |evaluator|
                 evaluator.name name
                 evaluator.instance_eval(&blk)
               end
@@ -39,9 +39,9 @@ module RedSands
         BaseCard.new(**evaluator.attributes)
       end
 
-      sig { params(type: String, blk: T.proc.returns(RedSands::Effect)).returns(RedSands::Effect) }
+      sig { params(type: String, blk: T.proc.returns(Effect)).returns(Effect) }
       def effect(type, &blk)
-        attributes["#{type}_effect".to_sym] = RedSands::Rules::EffectEvaluator.new.then do |evaluator|
+        attributes["#{type}_effect".to_sym] = Rules::EffectEvaluator.new.then do |evaluator|
           evaluator.instance_eval(&blk)
         end
       end

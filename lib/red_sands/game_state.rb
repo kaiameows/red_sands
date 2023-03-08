@@ -5,8 +5,11 @@ require 'forwardable'
 
 module RedSands
   # GameState encapsulates the state of the game
+  # rubocop:disable Metrics/ClassLength
   class GameState < BaseModel
+    extend T::Sig
     extend Forwardable
+    TournamentDeck = T.type_alias { T::Array[Cards::TournamentCard] }
 
     class << self
       def push(state) = states.push(state)
@@ -85,6 +88,15 @@ module RedSands
     attr_reader :players
     attr_accessor :ruleset, :market, :tournament_deck
 
+    sig do
+      params(
+        players: T::Array[Player],
+        ruleset: Rules::RuleSet,
+        market: Market,
+        tournament_deck: TournamentDeck,
+        workers: T::Array[Worker]
+      ).void
+    end
     def initialize(
       players:,
       ruleset: Rules::StandardRules.new,
@@ -104,6 +116,7 @@ module RedSands
       [] # TODO: write this
     end
 
+    sig { params(players: T::Array[Player]).returns(T::Array[Worker]) }
     def generate_workers(players)
       players.flat_map do |player|
         Array.new(2) { Worker.new(player:) }
@@ -153,4 +166,5 @@ module RedSands
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

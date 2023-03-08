@@ -6,42 +6,58 @@ RSpec.describe RedSands::Rules::LocationEvaluator do
     -> (_) {
       name 'Meowville'
       cost gems: 6
-      resources 3, 2
+      squiggle 3, 2
       combat_zone
-      effect do
+      effect 'meow!' do
         meow
       end
     }
   end
-  let(:subject) { described_class.new('Warrior') }
+  let(:subject) { described_class.new(sector: RedSands::Sector::Warrior) }
 
   before do
     subject.instance_eval(&dsl)
   end
 
   it 'interprets single-value attributes' do
-    expect(subject.attributes[:cost]).to eq(gems: 6)
+    expect(subject.attributes[:cost]).to eq(RedSands::Resources.new(gems: 6))
   end
 
   it 'interprets multi-value attributes' do
-    expect(subject.attributes[:resources]).to eq([3,2])
+    expect(subject.attributes[:squiggle]).to eq([3, 2])
   end
 
   it 'interprets boolean attributes' do
     expect(subject.attributes[:combat_zone]).to be true
   end
 
-  it 'saves effects as blocks' do
-    expect(subject.attributes[:effect]).to be_a(Proc)
+  it 'saves effects as Effects' do
+    expect(subject.attributes[:effect]).to be_a(RedSands::Effect)
   end
   context 'building location objects' do
+    let(:dsl) do
+      -> (_) {
+        name 'Meowville'
+        cost gems: 6
+        resources money: 3, food: 2
+        combat_zone
+        effect 'draw 2 cards' do
+          choice do
+            option 'draw 2 cards' do
+              draw 2
+            end
+            option do_nothing
+          end
+        end
+      }
+    end
     let(:location) { subject.build }
     it 'sets the cost' do
-      expect(location.cost).to eq(gems: 6)
+      expect(location.cost).to eq(RedSands::Resources.new(gems: 6))
     end
 
     it 'sets the resources' do
-      expect(location.resources).to eq([3,2])
+      expect(location.resources).to be_a(RedSands::Effect)
     end
 
     it 'sets the combat zone flag' do
@@ -49,7 +65,7 @@ RSpec.describe RedSands::Rules::LocationEvaluator do
     end
 
     it 'sets the effect' do
-      expect(location.effect).to be_a(Proc)
+      expect(location.effect).to be_a(RedSands::Effect)
     end
   end
 end

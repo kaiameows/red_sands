@@ -12,12 +12,12 @@ module RedSands
       state_machine(:location, initial: :market) do
       end
       # rubocop:enable Lint/EmptyBlock
-      include RedSands::Concerns::Flaggable
-      include RedSands::Concerns::Playable
-      include RedSands::Concerns::Buyable
-      include RedSands::Concerns::Discardable
-      include RedSands::Concerns::Exileable
-      include RedSands::Concerns::Drawable
+      include Concerns::Flaggable
+      include Concerns::Playable
+      include Concerns::Buyable
+      include Concerns::Discardable
+      include Concerns::Exileable
+      include Concerns::Drawable
 
       sig { returns(Integer) }
       attr_reader :power_cost

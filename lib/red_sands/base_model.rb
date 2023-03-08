@@ -6,6 +6,6 @@ module RedSands
   # it includes the Ma.publisher module and also the RedSands publisher module
   class BaseModel
     include Wisper::Publisher
-    include RedSands::Events::Publisher
+    include Events::Publisher
   end
 end

@@ -15,7 +15,7 @@ module RedSands
     sig { returns(String) }
     attr_reader :description
 
-    sig { returns(Resources) }
+    sig { returns(T.nilable(Resources)) }
     attr_reader :cost
 
     sig { returns(T.nilable(T.proc.returns(T::Boolean))) }
@@ -28,7 +28,7 @@ module RedSands
       params(
         description: String,
         effect: T.proc.void,
-        cost: Resources,
+        cost: T.nilable(Resources),
         precondition: T.nilable(T.proc.returns(T::Boolean))
       ).void
     end

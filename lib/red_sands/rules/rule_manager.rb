@@ -13,7 +13,7 @@ module RedSands
         # TODO: Allow rules to be chosen at runtime
         # presumably there will be some form of input for this project at some point
         # but for now we'll just return the default
-        RedSands::Rules::StandardRules.new
+        Rules::StandardRules.new
       end
     end
   end

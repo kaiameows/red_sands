@@ -26,7 +26,7 @@ module RedSands
             T.bind(self, Rules::RuleFactory)
             allowed_phases plot_phase
             effect do
-              T.bind(self, RedSands::Rules::EffectEvaluator)
+              T.bind(self, Rules::EffectEvaluator)
               choice 'Pay 3 money to gain 3 troops' do
                 T.bind(self, Rules::ChoiceEvaluator)
                 option 'Pay 3 money to gain 3 troops' do

@@ -6,7 +6,7 @@ module RedSands
     # Probably there's some more elegant metaprogramming way to do this
     # but sorbet would really prefer that I not
     class MarketCardEvaluator < CardEvaluator
-      sig { override.params(evaluator: RedSands::Rules::RuleFactory).returns(MarketCard) }
+      sig { override.params(evaluator: Rules::RuleFactory).returns(MarketCard) }
       def build(evaluator)
         MarketCard.new(**evaluator.attributes)
       end

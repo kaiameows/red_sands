@@ -4,7 +4,7 @@
 module RedSands
   module Cards
     # provides the DSL for defining treasure cards
-    class TreasureCardEvaluator < RedSands::Rules::RuleFactory
+    class TreasureCardEvaluator < Rules::RuleFactory
       extend T::Sig
 
       sig { returns(T::Array[TreasureCard]) }
@@ -28,14 +28,14 @@ module RedSands
         end)
       end
 
-      sig { params(evaluator: RedSands::Rules::RuleFactory).returns(TreasureCard) }
+      sig { params(evaluator: Rules::RuleFactory).returns(TreasureCard) }
       def build(evaluator)
         TreasureCard.new(**evaluator.attributes.slice(:name, :allowed_phases, :effect))
       end
 
-      sig { returns(RedSands::Rules::RuleFactory) }
+      sig { returns(Rules::RuleFactory) }
       def evaluator
-        RedSands::Rules::RuleFactory.new
+        Rules::RuleFactory.new
       end
     end
   end

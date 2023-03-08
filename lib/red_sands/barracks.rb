@@ -31,7 +31,7 @@ module RedSands
 
     sig { returns(Troops::NormalTroop) }
     def default_troop
-      RedSands::Troops::NormalTroop.new
+      Troops::NormalTroop.new
     end
   end
 end

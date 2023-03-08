@@ -11,7 +11,7 @@ module RedSands
       power_cost: 0,
       sectors: ['Magic', 'Empire', 'Guild', 'Warrior', 'Uninhabited Sector', 'Inhabited Sector', 'Hall of Heroes'],
       action_effect: -> {
-        T.bind(self, RedSands::Rules::EffectEvaluator)
+        T.bind(self, Rules::EffectEvaluator)
         draw 1
         exile(nil) # idk how this needs to work
       }

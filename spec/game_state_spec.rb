@@ -3,7 +3,8 @@
 
 RSpec.describe RedSands::GameState do
   let(:players) { [double('player'), double('player')] }
-  let(:subject) { described_class.new(players:) }
+  let(:workers) { [double('worker'), double('worker')] }
+  let(:subject) { described_class.new(players:, workers:) }
   context 'object history' do
     describe '.states' do
       before { described_class.clear }

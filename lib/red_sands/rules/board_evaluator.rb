@@ -7,27 +7,17 @@ module RedSands
   module Rules
     # BoardEvaluator provides a DSL for defining a game board
     class BoardEvaluator < RuleFactory
-      def sectors = @sectors ||= []
+      def locations = @locations ||= []
 
-      def sector(name, &)
-        sectors << SectorEvaluator.new.tap do |evaluator|
-          evaluator.name name
-          evaluator.instance_eval(&)
+      # sectors are not actual objects, they're a flag on the location
+      def sector(name, &blk)
+        locations << LocationEvaluator.new(sector: name).tap do |evaluator|
+          evaluator.instance_eval(&blk)
         end.build
       end
 
-      def diplomatic_sector(name, &)
-        sector(name, &)
-        sectors.last.add_flag(:diplomatic, true)
-      end
-
-      def planet_sector(name, &)
-        sector(name, &)
-        sectors.last.add_flag(:planet, true)
-      end
-
       def build
-        RedSands::Board.new(name: attributes[:name], sectors:).tap do |board|
+        Board.new(locations:).tap do |board|
           boolean_attributes.each { |k, v| board.add_flag(k, v) }
         end
       end

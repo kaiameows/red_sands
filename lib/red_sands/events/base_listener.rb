@@ -10,10 +10,10 @@ module RedSands
           super("Precondition not met for event #{event.class.name}")
         end
       end
-      include RedSands::Events::Publisher
+      include Events::Publisher
 
       def game_state
-        RedSands::GameState.current
+        GameState.current
       end
 
       def check_precondition(model)

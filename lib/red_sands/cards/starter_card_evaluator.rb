@@ -8,7 +8,7 @@ module RedSands
     class StarterCardEvaluator < CardEvaluator
       extend T::Sig
 
-      sig { override.params(evaluator: RedSands::Rules::RuleFactory).returns(StarterCard) }
+      sig { override.params(evaluator: Rules::RuleFactory).returns(StarterCard) }
       def build(evaluator)
         StarterCard.new(**evaluator.attributes)
       end

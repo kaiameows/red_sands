@@ -14,7 +14,7 @@ module RedSands
     end
 
     def trigger
-      broadcast(RedSands::Events::LeaderPower.new(precondition:, effect:, cost:))
+      broadcast(Events::LeaderPower.new(precondition:, effect:, cost:))
     end
   end
 end

@@ -3,7 +3,7 @@
 
 module RedSands
   module Cards
-    Factory = T.type_alias { RedSands::Rules::RuleFactory }
+    Factory = T.type_alias { Rules::RuleFactory }
     Deck = T.type_alias { T::Array[BaseCard] }
     # BaseCard is the base class for all cards in the game
     class BaseCard < BaseModel

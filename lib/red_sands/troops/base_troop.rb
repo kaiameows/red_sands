@@ -6,7 +6,7 @@ module RedSands
     # BaseTroop is the base class for all troops
     class BaseTroop < BaseModel
       extend T::Sig
-      include RedSands::Concerns::Flaggable
+      include Concerns::Flaggable
 
       state_machine :deployment_state, initial: :spawned do
         event :activate do

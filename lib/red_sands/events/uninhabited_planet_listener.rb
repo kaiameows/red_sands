@@ -4,7 +4,7 @@
 module RedSands
   module Events
     # UninhabitedPlanetEvents contains end-of-turn events for uninhabited planet locations
-    class UninhabitedPlanetListener < RedSands::Events::BaseListener
+    class UninhabitedPlanetListener < Events::BaseListener
       def on_resolution_phase(game_state:)
         turn_end_add_gems(game_state)
       end
