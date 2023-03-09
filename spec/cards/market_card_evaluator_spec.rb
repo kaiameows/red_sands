@@ -26,8 +26,8 @@ RSpec.describe RedSands::Cards::MarketCardEvaluator do
     its(:power_cost) { is_expected.to eq(3) }
     its(:factions) { is_expected.to eq([RedSands::Faction::Empire, RedSands::Faction::Magic]) }
     its(:sectors) { is_expected.to eq([RedSands::Sector::Uninhabited, RedSands::Sector::Alchemist]) }
-    its(:buy_effect) { is_expected.to be_a(RedSands::Effect) }
-    its(:reveal_effect) { is_expected.to be_a(RedSands::Effect) }
-    its(:action_effect) { is_expected.to be_a(RedSands::Effect) }
+    its(:buy_effect) { is_expected.to be_a(Proc) }
+    its(:reveal_effect) { is_expected.to be_a(Proc) }
+    its(:action_effect) { is_expected.to be_a(Proc) }
   end
 end
